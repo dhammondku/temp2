@@ -1,0 +1,41 @@
+<html>
+<head>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+</head>
+<body>
+    
+    <script type="text/javascript">
+    var stomp = Stomp.client('wss://ovs.kontakt.io:9090/stream?apiKey=ssqeJLoOlhQteYIOHPcJCfLbWJyrRxnf');
+
+    var headers = {'api-key': 'ssqeJLoOlhQteYIOHPcJCfLbWJyrRxnf'};
+
+    let gateways = {}
+
+    stomp.connect(headers, function(cb) {
+        //var topic = stomp.subscribe('/presence/stream/4UeSQ', function(e) {
+        let topic = stomp.subscribe('/stream/8afcbb5b-7a78-4972-a775-e808f6beee9a/presence', function(e) {
+            //debugger
+            //console.log(JSON.parse(e.body));
+            let data = JSON.parse(e.body)
+            if(data && Array.isArray(data))
+            {
+                let filteredData = data.filter(i => !i.trackingId.includes(":"))
+                console.log(filteredData)
+
+                filteredData.forEach(i => {
+                    if(!gateways[i.sourceId]) {
+                        gateways[i.sourceId] = {}
+                    }
+
+                    gateways[i.sourceId][i.trackingId] = i
+                })
+            }
+            else {
+                console.log(data)
+            }
+        }, headers);
+    });
+    </script>
+</body>
+</html>
