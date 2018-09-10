@@ -2,10 +2,9 @@
   "name": "temp2",
   "version": "1.0.0",
   "description": "",
-  "main": "temp.js",
+  "main": "app.js",
   "scripts": {
     "start": "parcel src/index.html",
-    "build": "parcel build src/index.html --no-minify --public-url ./",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
